@@ -1,11 +1,9 @@
-v1
-
-This is a fork of [nixbuild/nix-quick-install-action@v30](https://github.com/nixbuild/nix-quick-install-action/tree/v30).
-Changes listed here are relative to that release.
+v2.0.0
 
 ## Changes
-- Add support for Lix
-  - Supported versions: 2.92.0, 2.91.1, 2.90.0
-- Add `nix-implementation` option to allow selecting which Nix implementation to install
-  - Supported implementations: nix, lix
-- Change default version and implementation to Lix 2.92.0
+- Drop support for Nix
+  - Remove `nix-implementation` option
+- Rename all options in action to be prefixed with `lix` instead of `nix`, to reflect support
+- Remove the flake in the repo; switch to a classic `default.nix`-based project
+  - Dependency management now done with [npins](https://github.com/andir/npins)
+- Restructure internal release process to be easier to maintain
