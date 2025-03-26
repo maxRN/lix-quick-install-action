@@ -18,7 +18,7 @@ The main motivation behind this action is to install Lix as quickly as possible 
 - Looking for Nix, not Lix? This action is a fork of [nixbuild/nix-quick-install-action](https://github.com/samueldr/lix-gha-installer-action)! We forked it to install Lix instead of Nix - if you need Nix, this one works in exactly the same way.
 - There's also Cachix's [install-nix-action](https://github.com/cachix/install-nix-action) if you need a multi-user Nix install.
 
-The action provides you with a fully working Lix setup, but since no `NIX_PATH` or channels are setup you need to handle this on your own. Flakes is great for this, and works perfectly with this action (see below). [niv](https://github.com/nmattia/niv) should also work fine, but has not been tested yet.
+The action provides you with a fully working Lix setup, but since no `NIX_PATH` or channels are setup you need to handle dependency management on your own. We recommend [npins](https://github.com/andir/npins) for this - it's what we use in this repo, and works great in our CI/CD release process. Flakes also work great with this action - see below for an example.
 
 ## Inputs
 
@@ -38,17 +38,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: canidae-solutions/lix-quick-install-action@v1
-      - run: nix build --version
-      - run: nix build ./examples/flakes-simple
-      - name: hello
-        run: ./result/bin/hello
+      - run: nix-build --version
 ```
 
 ![action-minimal](examples/action-minimal.png)
 
 ### Flakes
 
-These settings are always set by default:
+Flakes are supported out-of-the-box, with no extra configuration required. These settings are always set by default:
 
 ```conf
 experimental-features = nix-command flakes
