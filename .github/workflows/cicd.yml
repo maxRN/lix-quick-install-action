@@ -128,7 +128,7 @@ jobs:
       - build
       - test
       - test-cachix
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     permissions:
       contents: write
     steps:
