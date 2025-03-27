@@ -1,5 +1,7 @@
 # Lix Quick Install Action
 
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/canidae-solutions/lix-quick-install-action/cicd.yml) ![GitHub Release](https://img.shields.io/github/v/release/canidae-solutions/lix-quick-install-action)
+
 This GitHub Action installs [Lix](https://lix.systems/) in single-user mode, and adds almost no time at all to your workflow's running time.
 
 The Lix installation is deterministic – for a given release of this action the resulting Lix setup will always be identical, no matter when you run the action.
