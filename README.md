@@ -1,98 +1,63 @@
-# Lix Quick Install Action
+# lix quick install action
 
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/canidae-solutions/lix-quick-install-action/cicd.yml) ![GitHub Release](https://img.shields.io/github/v/release/canidae-solutions/lix-quick-install-action)
+[![ci/cd pipeline static](https://img.shields.io/github/actions/workflow/status/canidae-solutions/lix-quick-install-action/cicd.yml)](https://github.com/canidae-solutions/lix-quick-install-action/actions/workflows/cicd.yml) [![latest release](https://img.shields.io/github/v/release/canidae-solutions/lix-quick-install-action)](https://github.com/canidae-solutions/lix-quick-install-action/releases/latest) ![trans rights](https://pride-badges.pony.workers.dev/static/v1?label=trans%20rights&stripeWidth=6&stripeColors=5BCEFA,F5A9B8,FFFFFF,F5A9B8,5BCEFA)
 
-This GitHub Action installs [Lix](https://lix.systems/) in single-user mode, and adds almost no time at all to your workflow's running time.
+sets up [lix](https://lix.systems/) in single-user mode on github actions, really fast.
 
-The Lix installation is deterministic – for a given release of this action the resulting Lix setup will always be identical, no matter when you run the action.
+- how fast? ~5 seconds tops, in our testing
+- deterministic setups - get the same lix install, every time
+- supports all linux and macos runners
+- lets you configure the lix install exactly how you need it
 
-- Supports all Linux and MacOS runners
-- Single-user installation (no `nix-daemon`)
-- Installs in ≈ 1 second on Linux, ≈ 5 seconds on MacOS
-- Allows selecting Lix version via the `lix_version` input
-- Allows specifying `nix.conf` contents via the `lix_conf` input
-
-## Details
-
-The main motivation behind this action is to install Lix as quickly as possible in your GitHub workflow. To achieve this, the installation is minimal: no daemon (ie. single-user Lix), no channels and no `NIX_PATH`. The nix store (`/nix/store`) is owned by the unprivileged runner user. If that's not what you're looking for...
-
-- Need multi-user Lix? [samueldr/lix-gha-installer-action](https://github.com/samueldr/lix-gha-installer-action) does a full setup of Lix in multi-user mode (daemon mode) using the official Lix installer.
-- Looking for Nix, not Lix? This action is a fork of [nixbuild/nix-quick-install-action](https://github.com/samueldr/lix-gha-installer-action)! We forked it to install Lix instead of Nix - if you need Nix, this one works in exactly the same way.
-- There's also Cachix's [install-nix-action](https://github.com/cachix/install-nix-action) if you need a multi-user Nix install.
-
-The action provides you with a fully working Lix setup, but since no `NIX_PATH` or channels are setup you need to handle dependency management on your own. We recommend [npins](https://github.com/andir/npins) for this - it's what we use in this repo, and works great in our CI/CD release process. Flakes also work great with this action - see below for an example.
-
-## Inputs
-
-See [action.yml](action.yml) for documentation of the available inputs. The available Lix versions are listed in the [release notes](https://github.com/canidae-solutions/lix-quick-install-action/releases/latest).
-
-## Usage
-
-### Minimal example
-
-The following workflow installs Lix and then just runs `nix-build --version`:
+getting started only takes one extra line in your workflows:
 
 ```yaml
-name: Examples
-on: push
-jobs:
-  minimal:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: canidae-solutions/lix-quick-install-action@v1
-      - run: nix-build --version
+steps:
+  - uses: canidae-solutions/lix-quick-install-action@v2
 ```
 
-![action-minimal](examples/action-minimal.png)
+## notes
 
-### Flakes
+to keep the install super-speedy, the action doesn't do much more than just setup lix in single user mode. that means there's no multi-user daemon, no channels configured, and nothing in `NIX_PATH`. notably, this means references to eg. `<nixpkgs>` in your code won't work - you'll need to manage dependencies yourself. we recommend using [npins](https://github.com/andir/npins) for this, but any other solution will work just fine, including [niv](https://github.com/nmattia/niv) or [flakes](https://nixos.wiki/wiki/Flakes). check out the [examples directory](https://github.com/canidae-solutions/lix-quick-install-action/tree/main/examples) to see how it all works.
 
-Flakes are supported out-of-the-box, with no extra configuration required. These settings are always set by default:
+if you need something other than single-user lix in your pipelines, here's some suggestions:
+- need multi-user lix? [samueldr/lix-gha-installer-action](https://github.com/samueldr/lix-gha-installer-action) does a full setup of lix in multi-user mode (ie. with a daemon) using the official lix installer.
+- want nix instead? [nixbuild/nix-quick-install-action](https://github.com/nixbuild/nix-quick-instal-action) is what we forked to create this action, and it works just as well for setting up nix.
+- there's also cachix's [cachix/install-nix-action](https://github.com/cachix/install-nix-action) if you need a multi-user nix install.
 
-```conf
-experimental-features = nix-command flakes
-accept-flake-config = true
-```
+caching your builds is a great way to speed up your ci runs even further! you can use [cachix/cachix-action](https://github.com/cachix/cachix-action) to upload all your built derivation outputs to a remote [cachix](https://cachix.org) store, or [nix-community/cache-nix-action](https://github.com/nix-community/cache-nix-action) to store the final nix store in github actions' built-in cache. both options work great alongside this action - just set them up to run after the install.
 
-![action-minimal](examples/action-flakes-simple.png)
+## local testing
 
-You can see the flake definition for the above example in [examples/flakes-simple/flake.nix](examples/flakes-simple/flake.nix).
-
-### Using Cachix
-
-You can use the [Cachix action](https://github.com/marketplace/actions/cachix) together with this action, just make sure you put it after this action in your workflow.
-
-### Using specific Lix versions locally
-
-Locally, you can use this repository to build or run any of the versions of Lix that this action supports. This is very convenient if you quickly need to compare the behavior between different Lix versions.
-
-Build a specific version of Lix like this:
-
-```
-$ nix build -f https://github.com/canidae-solutions/lix-quick-install-action/archive/refs/heads/main.zip lixVersions.v2_92_0
-
-$ ./result/bin/nix --version
-nix (Lix, like Nix) 2.92.0
-```
-
-With `nix run` you can also directly run Lix like this:
+we expose a nix expression from this repo that contains derivations for the exact same copies of lix that we install in runners with this action, so you can use them to quickly run local tests against the environment in actions with `nix run`, like so:
 
 ```
 $ nix run -f https://github.com/canidae-solutions/lix-quick-install-action/archive/refs/heads/main.zip lixVersions.v2_92_0 -- --version
 nix (Lix, like Nix) 2.92.0
 ```
 
-List all available Lix versions like this:
+all of the lix derivations live under `lixVersions`, keyed by version. if you need to see what versions we have available, you can run:
 
 ```
 $ nix eval -f https://github.com/canidae-solutions/lix-quick-install-action/archive/refs/heads/main.zip lixVersions --apply builtins.attrNames
 [ "v2_90_0" "v2_91_1" "v2_92_0" ]
 ```
 
-If you want to make sure that the version of Lix you're trying to build hasn't been removed in the latest revision of `lix-quick-install-action`, you can specify a specific release of `lix-quick-install-action` like this:
+you can also specify a specific version of the action, to see what lix versions are available in that release. just replace `main` in the url with the version.
 
 ```
 $ nix build -f https://github.com/canidae-solutions/lix-quick-install-action/archive/refs/heads/v1.zip lixVersions.v2_92_0
+nix (Lix, like Nix) 2.92.0
 ```
 
-Note that we've added `v1.zip` instead of `main.zip` to the url above.
+## reference
+
+the action supports a few optional configurations, to fine-tune the installation behaviour. [action.yml](action.yml) is where all the options are defined, but here's a quick reference:
+
+| option              | description                                                                                                                                                   | default                                                                |
+|---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------|
+| `lix_version`       | the version of lix to install. check the [releases](https://github.com/canidae-solutions/lix-quick-install-action/releases) for a list of supported versions. | 2.92.0                                                                 |
+| `lix_conf`          | extra configuration options to add to `/etc/nix/nix.conf`.                                                                                                    | `<empty>`                                                                     |
+| `github_access_token` | the access token to use when fetching github repositories.                                                                                                    | `${{ github.token }}` (ie. the same token exposed during actions runs) |
+| `lix_on_tmpfs`      | whether to install the lix store on a tmpfs. this can speed up lix builds a little bit, at the expense of using extra memory in the runner.                   | `false`                                                                |
+| `enable_kvm`        | whether to enable kvm on linux runners if supported. this helps builds run a lot faster - we recommend leaving this on unless you run into issues with it.    | `true`                                                                 |
