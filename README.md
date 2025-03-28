@@ -5,7 +5,7 @@
 sets up [lix](https://lix.systems/) in single-user mode on github actions, really fast.
 
 - how fast? ~5 seconds tops, in our testing
-- deterministic setups - get the same lix install, every time
+- deterministic installs - get the same lix install, every time
 - supports all linux and macos runners
 - lets you configure the lix install exactly how you need it
 
@@ -21,7 +21,7 @@ steps:
 to keep the install super-speedy, the action doesn't do much more than just setup lix in single user mode. that means there's no multi-user daemon, no channels configured, and nothing in `NIX_PATH`. notably, this means references to eg. `<nixpkgs>` in your code won't work - you'll need to manage dependencies yourself. we recommend using [npins](https://github.com/andir/npins) for this, but any other solution will work just fine, including [niv](https://github.com/nmattia/niv) or [flakes](https://nixos.wiki/wiki/Flakes). check out the [examples directory](https://github.com/canidae-solutions/lix-quick-install-action/tree/main/examples) to see how it all works.
 
 if you need something other than single-user lix in your pipelines, here's some suggestions:
-- need multi-user lix? [samueldr/lix-gha-installer-action](https://github.com/samueldr/lix-gha-installer-action) does a full setup of lix in multi-user mode (ie. with a daemon) using the official lix installer.
+- need multi-user lix? [samueldr/lix-gha-installer-action](https://github.com/samueldr/lix-gha-installer-action) does a full install of lix in multi-user mode (ie. with a daemon) using the official lix installer.
 - want nix instead? [nixbuild/nix-quick-install-action](https://github.com/nixbuild/nix-quick-instal-action) is what we forked to create this action, and it works just as well for setting up nix.
 - there's also cachix's [cachix/install-nix-action](https://github.com/cachix/install-nix-action) if you need a multi-user nix install.
 
