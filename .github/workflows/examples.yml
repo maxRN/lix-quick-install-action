@@ -6,18 +6,40 @@ on:
       - main
 
 jobs:
-  minimal:
+  version-check:
     runs-on: ubuntu-latest
     steps:
       - uses: canidae-solutions/lix-quick-install-action@v2
-      - run: nix-build --version
+      - run: nix --version
 
-  flakes-simple:
+  flakes:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: canidae-solutions/lix-quick-install-action@v2
-      - name: nix build
-        run: nix build ./examples/flakes-simple
-      - name: hello
-        run: ./result/bin/hello
+      - name: nix run
+        run: nix run ./examples/flakes
+
+  npins:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: canidae-solutions/lix-quick-install-action@v2
+      - name: nix run
+        run: nix run -f examples/npins
+
+  niv:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: canidae-solutions/lix-quick-install-action@v2
+      - name: nix run
+        run: nix run -f examples/niv
+
+  pinned-fetchurl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: canidae-solutions/lix-quick-install-action@v2
+      - name: nix run
+        run: nix run -f examples/pinned-fetchurl
