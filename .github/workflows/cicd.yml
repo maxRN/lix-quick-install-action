@@ -57,9 +57,9 @@ jobs:
           - macos-15
           - macos-13
         version:
+          - 2.93.0
           - 2.92.0
           - 2.91.1
-          - 2.90.0
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -91,9 +91,9 @@ jobs:
           - macos-15
           - macos-13
         version:
+          - 2.93.0
           - 2.92.0
           - 2.91.1
-          - 2.90.0
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
