@@ -54,7 +54,6 @@ let
       lix_2_93
       lix_2_92
       lixVersions.lix_2_91
-      lixVersions.lix_2_90
     ];
 in
 rec {
