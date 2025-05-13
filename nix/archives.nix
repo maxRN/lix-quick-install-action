@@ -47,8 +47,11 @@ let
           propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ ncurses ];
         });
       };
+
+      lix_2_93 = ((import pins.lix-2_93).overlays.default pkgs pkgs).nix;
     in
     [
+      lix_2_93
       lix_2_92
       lixVersions.lix_2_91
       lixVersions.lix_2_90
