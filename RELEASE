@@ -1,6 +1,5 @@
-v3.0.0
+v3.0.1
 
 ## changes
-- add support for lix 2.93.0
-- change default lix version from 2.92.0 to 2.93.0
-- drop support for lix 2.90.0
+- update nixpkgs used to build lix
+- build lix 2.92 and 2.93 from nixpkgs instead of sources
