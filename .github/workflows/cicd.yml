@@ -23,9 +23,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
-      - uses: canidae-solutions/lix-quick-install-action@v2
+      - uses: canidae-solutions/lix-quick-install-action@v3
         with:
-          lix_archives_url: https://github.com/canidae-solutions/lix-quick-install-action/releases/download/v3.0.0
+          lix_archives_url: https://github.com/canidae-solutions/lix-quick-install-action/releases/download/v3.0.1
           lix_version: 2.93.0
       - uses: cachix/cachix-action@v16
         with:
