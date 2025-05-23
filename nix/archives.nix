@@ -27,30 +27,13 @@ let
     );
 
   # Accepts a system, and returns a list of Lix derivations that are supported on that system.
-  lixVersionsForSystem =
-    system:
-    let
-      # enabling LTO on darwin systems seems to cause all manner of weird and wacky bustage on lix 2.92 and newer.
-      # until that's fixed, or until nixpkgs disables it there as well, this function will produce lix derivations that
-      # build with LTO disabled on darwin.
-      # https://github.com/NixOS/nixpkgs/pull/398141#discussion_r2091831651
-      # https://git.lix.systems/lix-project/lix/issues/832
-      disableLTO =
-        lix:
-        if !(builtins.elem system lib.platforms.darwin) then
-          lix
-        else
-          lix.overrideAttrs (prev: {
-            mesonFlags = (builtins.filter (flag: !(lib.hasInfix "b_lto" flag)) prev.mesonFlags) ++ [
-              (lib.mesonBool "b_lto" false)
-            ];
-          });
-    in
-    [
-      (disableLTO lixPackageSets.lix_2_93.lix)
-      (disableLTO lixPackageSets.lix_2_92.lix)
-      lixPackageSets.lix_2_91.lix
-    ];
+  # Currently there's no variation between systems (ie. all systems support all versions), but that may change in the
+  # future.
+  lixVersionsForSystem = system: [
+    lixPackageSets.lix_2_93.lix
+    lixPackageSets.lix_2_92.lix
+    lixPackageSets.lix_2_91.lix
+  ];
 in
 rec {
   # Accepts a system, and returns an attribute set from supported versions to Lix derivations.
