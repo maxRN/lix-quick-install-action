@@ -33,14 +33,14 @@ we expose a nix expression from this repo that contains derivations for the exac
 
 ```
 $ nix run -f https://github.com/canidae-solutions/lix-quick-install-action/archive/refs/heads/main.zip lixVersions.v2_93_0 -- --version
-nix (Lix, like Nix) 2.93.0
+nix (Lix, like Nix) 2.93.1
 ```
 
 all of the lix derivations live under `lixVersions`, keyed by version. if you need to see what versions we have available, you can run:
 
 ```
 $ nix eval -f https://github.com/canidae-solutions/lix-quick-install-action/archive/refs/heads/main.zip lixVersions --apply builtins.attrNames
-[ "v2_91_1" "v2_92_0" "v2_93_0" ]
+[ "v2_91_2" "v2_92_2" "v2_93_1" ]
 ```
 
 you can also specify a specific version of the action, to see what lix versions are available in that release. just replace `main` in the url with the version.
@@ -56,7 +56,7 @@ the action supports a few optional configurations, to fine-tune the installation
 
 | option              | description                                                                                                                                                   | default                                                                |
 |---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------|
-| `lix_version`       | the version of lix to install. check the [releases](https://github.com/canidae-solutions/lix-quick-install-action/releases) for a list of supported versions. | 2.93.0                                                                 |
+| `lix_version`       | the version of lix to install. check the [releases](https://github.com/canidae-solutions/lix-quick-install-action/releases) for a list of supported versions. | 2.93.1                                                                 |
 | `lix_conf`          | extra configuration options to add to `/etc/nix/nix.conf`.                                                                                                    | `<empty>`                                                                     |
 | `github_access_token` | the access token to use when fetching github repositories.                                                                                                    | `${{ github.token }}` (ie. the same token exposed during actions runs) |
 | `lix_on_tmpfs`      | whether to install the lix store on a tmpfs. this can speed up lix builds a little bit, at the expense of using extra memory in the runner.                   | `false`                                                                |
