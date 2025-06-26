@@ -1,5 +1,5 @@
-v3.0.1
+v3.0.2
 
 ## changes
-- update nixpkgs used to build lix
-- build lix 2.92 and 2.93 from nixpkgs instead of sources
+- update all lix versions to the latest patch release
+  - includes fixes for recent [security disclosure](https://lix.systems/blog/2025-06-24-lix-cves/)
