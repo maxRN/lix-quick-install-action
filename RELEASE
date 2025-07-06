@@ -1,5 +1,5 @@
-v3.0.2
+v3.0.3
 
 ## changes
 - update all lix versions to the latest patch release
-  - includes fixes for recent [security disclosure](https://lix.systems/blog/2025-06-24-lix-cves/)
+  - includes fixes for recent [correctness bug](https://lix.systems/blog/2025-06-27-lix-critical-bug/)
