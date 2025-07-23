@@ -54,10 +54,10 @@ runs:
   using: "composite"
   steps:
     - name: Install Lix in single-user mode
-      run: ${{ github.action_path }}/nix-quick-install.sh
+      run: ${GITHUB_ACTION_PATH}/nix-quick-install.sh
       shell: bash
       env:
-        RELEASE_FILE: ${{ github.action_path }}/RELEASE
+        RELEASE_FILE: ${GITHUB_ACTION_PATH}/RELEASE
         LIX_VERSION: ${{ inputs.lix_version }}
         LIX_CONF: ${{ inputs.lix_conf }}
         LIX_ARCHIVES_URL: ${{ inputs.lix_archives_url }}
